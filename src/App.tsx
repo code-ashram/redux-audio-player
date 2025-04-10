@@ -9,6 +9,7 @@ import PrevTrackBtn from '@/assets/images/PrevTrackBtn.svg?react'
 import NextTrackBtn from '@/assets/images/NextTrackBtn.svg?react'
 
 import './App.scss'
+import { ThemeSwitcher } from '@/components/ui/theme-switcher.tsx'
 
 const App = () => {
   const { theme } = useTheme()
@@ -27,11 +28,11 @@ const App = () => {
               <span>16:00</span>
             </div>
 
-            <Slider aria-label="volume" output="tooltip" defaultValue={12} />
+            <Slider className="trackSlider" aria-label="volume" defaultValue={12} />
           </div>
 
           <div className={'mt-7 flex w-[70%] items-center justify-between'}>
-            <button>
+            <button className="controlButton">
               <PrevTrackBtn />
             </button>
 
@@ -39,7 +40,7 @@ const App = () => {
               <PlayTrackBtn />
             </button>
 
-            <button>
+            <button className="controlButton">
               <NextTrackBtn />
             </button>
           </div>
@@ -48,7 +49,7 @@ const App = () => {
         <Card.Footer className="w-full border-t-transparent">
           <PlayList />
         </Card.Footer>
-        {/* <ThemeSwitcher /> */}
+        <ThemeSwitcher />
       </Card>
 
     </main>

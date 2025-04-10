@@ -16,4 +16,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'), // Настройка алиаса на директорию src
     },
   },
+  server: {
+    host: '0.0.0.0', // Привязываем сервер ко всем доступным интерфейсам
+  },
 })

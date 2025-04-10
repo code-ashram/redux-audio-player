@@ -1,25 +1,29 @@
 import { FC } from 'react'
 import { Card } from '@/components/ui/card'
 import { Table } from '@/components/ui/table'
+import { useTheme } from '@/components/theme-provider.tsx'
 
 const PlayList: FC = () => {
+  const { theme } = useTheme()
 
   return (
     <Card className="py-0 px-0 w-full h-[230px] rounded-none">
       <Table aria-label="Products" className="py-0 px-0">
-        <Table.Header className="sticky top-0 z-20 bg-[#101012/100]">
-          <Table.Column className="w-0 bg-[#101012]">#</Table.Column>
+        <Table.Header className="sticky top-0 z-10 cursor-default">
+          <Table.Column className={theme === 'light' ? 'bg-white text-black' : 'bg-black text-white'}>#</Table.Column>
 
-          <Table.Column className="bg-[#101012]" isRowHeader>Name</Table.Column>
+          <Table.Column className={theme === 'light' ? 'bg-white text-black' : 'bg-black text-white'} isRowHeader>Name</Table.Column>
 
-          <Table.Column className="bg-[#101012]">Album</Table.Column>
+          <Table.Column className={theme === 'light' ? 'bg-white text-black' : 'bg-black text-white'}>Album</Table.Column>
 
-          <Table.Column className="bg-[#101012]">Length</Table.Column>
+          <Table.Column className={theme === 'light' ? 'bg-white text-black' : 'bg-black text-white'}>
+            <p>Length</p>
+          </Table.Column>
         </Table.Header>
 
         <Table.Body className="overflow-y-scroll" items={products}>
           {(item) => (
-            <Table.Row className="text-left border-t-[#121215]" id={item.id}>
+            <Table.Row className="playlist text-left border-t-[#121215] cursor-pointer" id={item.id}>
               <Table.Cell>{item.id}</Table.Cell>
 
               <Table.Cell>{item.name}</Table.Cell>
