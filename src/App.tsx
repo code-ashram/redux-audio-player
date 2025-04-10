@@ -1,6 +1,9 @@
+import { useRef } from 'react'
+
 import { useTheme } from '@/components/theme-provider'
 import { Card } from '@/components/ui/card'
 import { Slider } from '@/components/ui/slider'
+import { ThemeSwitcher } from '@/components/ui/theme-switcher.tsx'
 import PlayList from '@/components/PlayList.tsx'
 
 import albumImage from '@/assets/images/svarga-dvar.jpg'
@@ -9,10 +12,16 @@ import PrevTrackBtn from '@/assets/images/PrevTrackBtn.svg?react'
 import NextTrackBtn from '@/assets/images/NextTrackBtn.svg?react'
 
 import './App.scss'
-import { ThemeSwitcher } from '@/components/ui/theme-switcher.tsx'
 
 const App = () => {
   const { theme } = useTheme()
+  const player = useRef<HTMLAudioElement | null>(null)
+
+  const handlePlayTrack = () => {
+    if (player.current) player.current.play()
+
+    console.log(player.current)
+  }
 
   return (
     <main className={theme}>
@@ -36,7 +45,7 @@ const App = () => {
               <PrevTrackBtn />
             </button>
 
-            <button className="controlButton">
+            <button className="controlButton" onClick={handlePlayTrack}>
               <PlayTrackBtn />
             </button>
 
@@ -49,6 +58,9 @@ const App = () => {
         <Card.Footer className="w-full border-t-transparent">
           <PlayList />
         </Card.Footer>
+
+        <audio ref={player} src="../public/power_trip.mp3"></audio>
+
         <ThemeSwitcher />
       </Card>
 
