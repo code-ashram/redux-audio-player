@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@inertiajs/react": "^2.0.6",
+    "@intentui/icons": "^1.10.32",
+    "@reduxjs/toolkit": "^2.6.1",
     "@tailwindcss/vite": "^4.1.1",
     "embla-carousel-react": "^8.6.0",
     "justd-icons": "^1.10.26",

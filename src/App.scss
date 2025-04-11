@@ -5,14 +5,14 @@
   text-align: center;
 }
 
-.trackSlider output {
-  display: none;
-}
-
 .controlButton {
   &:active {
     transform: scale(0.9);
   }
+
+  //.active  {
+  //  fill: #155dfc;
+  //}
 
   .svg path {
     fill: currentColor;
@@ -40,6 +40,10 @@
   &:hover path {
     fill: #155dfc;
   }
+}
+
+.controlButton.active path {
+  fill: #155dfc;
 }
 
 .playlist {
