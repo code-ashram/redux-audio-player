@@ -147,7 +147,7 @@ const App = () => {
               <RepeatTrackBtn />
             </button>
 
-            <button className="controlButton">
+            <button className="controlButton" onClick={handlePreviousTrack}>
               <PrevTrackBtn />
             </button>
 
@@ -158,7 +158,7 @@ const App = () => {
               }
             </button>
 
-            <button className="controlButton">
+            <button className="controlButton" onClick={handleNextTrack}>
               <NextTrackBtn />
             </button>
 
@@ -194,7 +194,7 @@ const App = () => {
           <PlayList />
         </Card.Footer>
 
-        <audio ref={player} src="/power_trip.mp3"></audio>
+        <audio ref={player} src={trackList[currentTrackIndex].source}></audio>
 
         <ThemeSwitcher />
       </Card>
