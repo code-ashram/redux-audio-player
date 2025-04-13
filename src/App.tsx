@@ -18,6 +18,8 @@ import NextTrackBtn from '@/assets/images/NextTrackBtn.svg?react'
 import PauseTrackBtn from '@/assets/images/PauseTrackBtn.svg?react'
 import RepeatTrackBtn from '@/assets/images/RepeatTrackBtn.svg?react'
 
+import trackList from '@/API/trackList.ts'
+
 import './App.scss'
 
 const App = () => {
@@ -29,6 +31,7 @@ const App = () => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [volume, setVolume] = useState<number>(0.7)
   const [isLoop, setIsLoop] = useState<boolean>(false)
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
 
   useEffect(() => {
     const audio = player.current
@@ -107,6 +110,12 @@ const App = () => {
 
     console.log(isLoop)
   }
+
+  const handleNextTrack = (): void =>
+    setCurrentTrackIndex((prevIndex) => prevIndex === trackList.length - 1 ? 0 : prevIndex + 1)
+
+  const handlePreviousTrack = (): void =>
+    setCurrentTrackIndex((prevIndex) => prevIndex <= 0 ? trackList.length - 1 : prevIndex - 1)
 
   return (
     <main className={theme}>
