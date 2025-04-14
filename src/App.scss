@@ -10,10 +10,6 @@
     transform: scale(0.9);
   }
 
-  //.active  {
-  //  fill: #155dfc;
-  //}
-
   .svg path {
     fill: currentColor;
     transition: fill 0.3s ease;
@@ -63,10 +59,10 @@
   }
 
   &:hover {
-    background-color: rgba(21, 93, 252, 0.24);
+    background-color: rgba(21, 93, 252, 0.14);
   }
 
   &.active {
-    background-color: rgba(21, 93, 252, 0.46);
+    background-color: rgba(21, 93, 252, 0.27);
   }
 }

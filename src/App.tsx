@@ -117,6 +117,10 @@ const App = () => {
   const handlePreviousTrack = (): void =>
     setCurrentTrackIndex((prevIndex) => prevIndex <= 0 ? trackList.length - 1 : prevIndex - 1)
 
+  const handleChoseTrackFromList = (trackIndex: number) => {
+    setCurrentTrackIndex(trackIndex)
+  }
+
   return (
     <main className={theme}>
       <Card className="items-center relative">
@@ -193,7 +197,7 @@ const App = () => {
         </Card.Content>
 
         <Card.Footer className="w-full border-t-transparent">
-          <PlayList list={trackList} />
+          <PlayList list={trackList} onChose={(trackIndex) => handleChoseTrackFromList(trackIndex)} />
         </Card.Footer>
 
         <audio ref={player} src={trackList[currentTrackIndex].source}></audio>
