@@ -12,6 +12,7 @@ interface PlayerState {
   currentTime: number
   volume: number
   currentTrackIndex: number
+  selectedTime: number | null
 }
 
 const initialState: PlayerState = {
@@ -22,6 +23,7 @@ const initialState: PlayerState = {
   currentTime: 0,
   volume: 0.65,
   currentTrackIndex: 0,
+  selectedTime: null
 }
 
 const playerSlice = createSlice({
@@ -45,6 +47,9 @@ const playerSlice = createSlice({
     },
     setCurrentTrackIndex: (state, { payload }: PayloadAction<number>) => {
       state.currentTrackIndex = payload
+    },
+    setSelectedTime: (state, { payload }: PayloadAction<number | null>) => {
+      state.selectedTime = payload
     }
   },
   selectors: {
@@ -53,7 +58,8 @@ const playerSlice = createSlice({
     trackDuration: state => state.duration,
     trackCurrentTime: state => state.currentTime,
     trackVolume: state => state.volume,
-    currentTrackIndex: state => state.currentTrackIndex
+    currentTrackIndex: state => state.currentTrackIndex,
+    trackSelectedTime: state => state.selectedTime
   }
 })
 
@@ -63,12 +69,13 @@ export const {
   setDuration,
   setCurrentTime,
   setVolume,
-  setCurrentTrackIndex
+  setCurrentTrackIndex,
+  setSelectedTime
 } = playerSlice.actions
 
 export const {
   isPlaying, isLoop, trackDuration, trackCurrentTime, trackVolume,
-  currentTrackIndex
+  currentTrackIndex, trackSelectedTime
 } = playerSlice.selectors
 
 export default playerSlice.reducer
