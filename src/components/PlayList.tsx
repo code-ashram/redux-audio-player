@@ -1,5 +1,7 @@
 import { FC, useRef, useState } from 'react'
 
+import { Card } from './ui/card'
+
 import Track from '@/models/Track.ts'
 
 type Props = {
@@ -18,6 +20,7 @@ const PlayList: FC<Props> = ({ list, onChose }) => {
   }
 
   return (
+    <Card.Footer className="w-full border-t-transparent">
     <ul className="playlist border-1">
       {list.map((track, index) =>
         <li
@@ -29,6 +32,7 @@ const PlayList: FC<Props> = ({ list, onChose }) => {
           {`${index + 1}. ${track.artist} - ${track.title}`}
         </li>)}
     </ul>
+    </Card.Footer>
   )
 }
 

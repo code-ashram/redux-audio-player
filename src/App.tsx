@@ -2,25 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 
 import { useTheme } from '@/components/theme-provider'
 import { Card } from '@/components/ui/card'
-import { Slider } from '@/components/ui/slider'
-import { Popover } from '@/components/ui/popover'
-import { Button } from '@/components/ui/button'
-import { ThemeSwitcher } from '@/components/ui/theme-switcher.tsx'
 import PlayList from '@/components/PlayList.tsx'
-
-import { formatTime } from '@/utils/helpers.ts'
-
-import { IconVolumeDown, IconVolumeFull, IconVolumeUp } from 'justd-icons'
-import albumImage from '@/assets/images/svarga-dvar.jpg'
-import PlayTrackBtn from '@/assets/images/PlayTrackBtn.svg?react'
-import PrevTrackBtn from '@/assets/images/PrevTrackBtn.svg?react'
-import NextTrackBtn from '@/assets/images/NextTrackBtn.svg?react'
-import PauseTrackBtn from '@/assets/images/PauseTrackBtn.svg?react'
-import RepeatTrackBtn from '@/assets/images/RepeatTrackBtn.svg?react'
 
 import trackList from '@/API/trackList.ts'
 
 import './App.scss'
+import ControlPanel from '@/components/ControlPanel.tsx'
+import PlayerHeader from '@/components/PlayerHeader.tsx'
 
 const App = () => {
   const { theme } = useTheme()
@@ -122,87 +110,27 @@ const App = () => {
   }
 
   return (
-    <main className={theme}>
-      <Card className="items-center relative">
-        <Card.Header>
-          <img src={albumImage} alt="Album's image" height="200px" />
+    <Card className={`${theme} items-center relative`}>
+      <PlayerHeader/>
 
-          <ThemeSwitcher />
-        </Card.Header>
+      <ControlPanel
+        currentTime={currentTime}
+        volume={volume}
+        duration={duration}
+        isPlaying={isPlaying}
+        isLoop={isLoop}
+        onPrev={handlePreviousTrack}
+        onPlay={handlePlayTrack}
+        onNext={handleNextTrack}
+        onLoop={toggleLoop}
+        onTime={handleSelectTrackTime}
+        onVolume={handleChangeVolume}
+      />
 
-        <Card.Content className="w-full flex flex-col items-center border-t-transparent">
-          <div className="flex w-full flex-col gap-y-1">
-            <div className="flex w-full items-center justify-between text-sm">
-              <span>{formatTime(currentTime)}</span>
+      <PlayList list={trackList} onChose={(trackIndex) => handleChoseTrackFromList(trackIndex)} />
 
-              <span>{formatTime(duration)}</span>
-            </div>
-
-            <Slider className="trackSlider"
-                    aria-label="volume"
-                    output="none"
-                    value={currentTime}
-                    minValue={0}
-                    maxValue={duration}
-                    onChange={(value) => handleSelectTrackTime(value as number)}
-            />
-          </div>
-
-          <div className={'mt-7 flex w-full items-center justify-around'}>
-            <button onClick={toggleLoop} className={`controlButton ${isLoop ? 'active' : null}`}>
-              <RepeatTrackBtn />
-            </button>
-
-            <button className="controlButton" onClick={handlePreviousTrack}>
-              <PrevTrackBtn />
-            </button>
-
-            <button className="controlButton" onClick={handlePlayTrack}>
-              {isPlaying
-                ? <PauseTrackBtn />
-                : <PlayTrackBtn />
-              }
-            </button>
-
-            <button className="controlButton" onClick={handleNextTrack}>
-              <NextTrackBtn />
-            </button>
-
-            <Popover>
-              <Button intent="outline" size="square-petite">
-                <IconVolumeFull />
-              </Button>
-
-              <Popover.Content showArrow={false} placement="right" className="p-4 sm:min-w-10">
-                <div className="flex flex-col justify-center items-center w-[30px]">
-                  <IconVolumeUp />
-
-                  <Slider
-                    className="mt-[2px]"
-                    maxValue={1}
-                    minValue={0}
-                    step={0.05}
-                    value={volume}
-                    output="none"
-                    orientation="vertical"
-                    onChange={(value) => handleChangeVolume(value as number)}
-                    aria-labelledby="volume-label"
-                  />
-
-                  <IconVolumeDown className="mt-2 translate-x-[2px]" />
-                </div>
-              </Popover.Content>
-            </Popover>
-          </div>
-        </Card.Content>
-
-        <Card.Footer className="w-full border-t-transparent">
-          <PlayList list={trackList} onChose={(trackIndex) => handleChoseTrackFromList(trackIndex)} />
-        </Card.Footer>
-
-        <audio ref={player} src={trackList[currentTrackIndex].source}></audio>
-      </Card>
-    </main>
+      <audio ref={player} src={trackList[currentTrackIndex].source}></audio>
+    </Card>
   )
 }
 
