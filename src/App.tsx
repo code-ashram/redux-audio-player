@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-
 import { useTheme } from '@/components/theme-provider'
+
 import { Card } from '@/components/ui/card'
 import PlayList from '@/components/PlayList.tsx'
+import ControlPanel from '@/components/ControlPanel.tsx'
+import PlayerHeader from '@/components/PlayerHeader.tsx'
 
 import trackList from '@/API/trackList.ts'
 
 import './App.scss'
-import ControlPanel from '@/components/ControlPanel.tsx'
-import PlayerHeader from '@/components/PlayerHeader.tsx'
 
 const App = () => {
   const { theme } = useTheme()
