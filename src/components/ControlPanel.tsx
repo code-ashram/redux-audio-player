@@ -57,7 +57,7 @@ const ControlPanel: FC<Props> = ({
                 value={currentTime}
                 minValue={0}
                 maxValue={duration}
-                onChange={(value) => onVolume(value as number)}
+                onChange={(value) => onTime(value as number)}
         />
       </div>
 
@@ -98,7 +98,7 @@ const ControlPanel: FC<Props> = ({
                 value={volume}
                 output="none"
                 orientation="vertical"
-                onChange={(value) => onTime(value as number)}
+                onChange={(value) => onVolume(value as number)}
                 aria-labelledby="volume-label"
               />
 

@@ -4,7 +4,7 @@ import playerReducer from './playerSlice.ts'
 
 const store = configureStore({
   reducer: {
-    tasks: playerReducer,
+    player: playerReducer,
   }
 })
 
