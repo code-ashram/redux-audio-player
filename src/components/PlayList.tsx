@@ -1,33 +1,25 @@
-import { FC } from 'react'
-import { Card } from '@/components/ui/card'
-import { Table } from '@/components/ui/table'
-import { useTheme } from '@/components/theme-provider.tsx'
-import { setTableColumnColor } from '@/utils/helpers.ts'
-import TrackList from '@/API/trackList.ts'
+import { FC, useState } from 'react'
 
-const PlayList: FC = () => {
-  const { theme } = useTheme()
+import Track from '@/models/Track.ts'
+
+type Props = {
+  list: Track[]
+}
+
+const PlayList: FC<Props> = ({ list }) => {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
   return (
-    <Card className="py-0 px-0 w-full h-[230px] rounded-none">
-      <Table aria-label="Products" className="py-0 px-0">
-        <Table.Header className="sticky top-0 z-10 cursor-default">
-          <Table.Column className={setTableColumnColor(theme)}>#</Table.Column>
-          <Table.Column className={setTableColumnColor(theme)} isRowHeader>Name</Table.Column>
-          <Table.Column className={setTableColumnColor(theme)}>Album</Table.Column>
-        </Table.Header>
-
-        <Table.Body className="overflow-y-scroll" items={TrackList}>
-          {(item) => (
-            <Table.Row className="playlist text-left border-t-[#121215] cursor-pointer" id={item.id}>
-              <Table.Cell>{item.id}</Table.Cell>
-              <Table.Cell>{item.name}</Table.Cell>
-              <Table.Cell>{item.album}</Table.Cell>
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
-    </Card>
+    <ul className="playlist border-1">
+      {list.map((track, index) =>
+        <li
+          key={track.id}
+          className={`listItem px-3 py-2 cursor-pointer border-b-1 ${activeIndex === index ? 'active' : ''}`}
+          onClick={() => setActiveIndex(index)}
+        >
+          {`${index + 1}. ${track.artist} - ${track.title}`}
+        </li>)}
+    </ul>
   )
 }
 

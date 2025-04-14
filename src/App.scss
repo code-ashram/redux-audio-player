@@ -47,13 +47,26 @@
 }
 
 .playlist {
-  transition: background-color 0.3s ease;
+  padding: 0;
+  width: 100%;
+  height: 210px;
+  overflow-y: scroll;
+  text-align: left;
+  font-size: 1.2rem;
+}
 
-  &:hover {
-    background-color: rgba(21, 92, 250, 0.3);
+.listItem {
+  transition: background-color 0.5s ease;
+
+  &:last-child {
+    border-bottom: none
   }
 
-  &:first-child {
-    background-color: rgba(21, 92, 250, 0.5);
+  &:hover {
+    background-color: rgba(21, 93, 252, 0.24);
+  }
+
+  &.active {
+    background-color: rgba(21, 93, 252, 0.46);
   }
 }

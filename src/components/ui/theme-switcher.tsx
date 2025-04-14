@@ -10,6 +10,7 @@ export function ThemeSwitcher({ appearance = "plain" }: Props) {
   const { theme, setTheme } = useTheme()
   return (
     <Button
+      className='absolute top-2 right-2'
       intent={appearance}
       size="square-petite"
       aria-label="Switch theme"

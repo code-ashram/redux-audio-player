@@ -119,9 +119,11 @@ const App = () => {
 
   return (
     <main className={theme}>
-      <Card className="items-center">
+      <Card className="items-center relative">
         <Card.Header>
           <img src={albumImage} alt="Album's image" height="200px" />
+
+          <ThemeSwitcher />
         </Card.Header>
 
         <Card.Content className="w-full flex flex-col items-center border-t-transparent">
@@ -191,12 +193,10 @@ const App = () => {
         </Card.Content>
 
         <Card.Footer className="w-full border-t-transparent">
-          <PlayList />
+          <PlayList list={trackList} />
         </Card.Footer>
 
         <audio ref={player} src={trackList[currentTrackIndex].source}></audio>
-
-        <ThemeSwitcher />
       </Card>
     </main>
   )

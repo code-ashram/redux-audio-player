@@ -5,23 +5,45 @@ const trackList: Track[] = [
     id: '1',
     source: '/public/power_trip.mp3',
     artist: 'Power Trip',
-    name: 'Hornet\'s Nest',
+    title: 'Hornet\'s Nest',
     album: 'Hornet\'s Nest (EP)',
   },
   {
     id: '2',
     source: '/public/setherial.mp3',
     artist: 'Setherial',
-    name: 'Their Blood In Me',
+    title: 'Their Blood In Me',
     album: 'For Dem Mitt Blod (EP)',
   },
   {
     id: '3',
     source: '/public/watain.mp3',
     artist: 'Watain',
-    name: 'Total Funeral',
+    title: 'Total Funeral',
     album: 'Lawless Darkness',
   },
+   {
+    id: '4',
+    source: '/public/burzum.mp3',
+    artist: 'Burzum',
+    title: 'Lost Wisdom',
+    album: 'Det Som Engang Var',
+  },
+   {
+    id: '5',
+    source: '/public/skin_her_alive.mp3',
+    artist: 'Skin Her Alive',
+    title: 'Among My Inner Fears',
+    album: 'Among My Inner Fears',
+  },
+{
+    id: '6',
+    source: '/public/gorgoroth.mp3',
+    artist: 'Gorgoroth',
+    title: 'Unchain My Hearth',
+    album: 'Incipit Satan',
+  },
+
 ]
 
 export default trackList
