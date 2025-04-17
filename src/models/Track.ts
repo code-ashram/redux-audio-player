@@ -5,6 +5,7 @@ type Track = {
   title: string;
   album?: string;
   year?: number;
+  cover?: string;
 }
 
 export default Track;

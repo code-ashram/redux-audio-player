@@ -9,6 +9,7 @@ import PrevTrackBtn from '@/assets/images/PrevTrackBtn.svg?react'
 import NextTrackBtn from '@/assets/images/NextTrackBtn.svg?react'
 import PauseTrackBtn from '@/assets/images/PauseTrackBtn.svg?react'
 import RepeatTrackBtn from '@/assets/images/RepeatTrackBtn.svg?react'
+import { ThemeSwitcher } from '@/components/ui/theme-switcher.tsx'
 
 import { formatTime } from '@/utils/helpers.ts'
 
@@ -17,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   currentTrackIndex,
   isLoop,
-  isPlaying,
+  isPlaying, playerPlaylist,
   playTrack,
   setCurrentTime,
   setCurrentTrackIndex,
@@ -27,7 +28,6 @@ import {
   trackDuration,
   trackVolume
 } from '@/store/playerSlice.ts'
-import trackList from '@/API/trackList.ts'
 
 type Props = {
   player: RefObject<HTMLAudioElement>
@@ -40,6 +40,7 @@ const ControlPanel: FC<Props> = ({ player }) => {
   const currentTime = useSelector(trackCurrentTime)
   const volume = useSelector(trackVolume)
   const trackIndex = useSelector(currentTrackIndex)
+  const playList = useSelector(playerPlaylist)
 
   const dispatch = useDispatch()
 
@@ -81,16 +82,22 @@ const ControlPanel: FC<Props> = ({ player }) => {
 
   const handleNextTrack = (): void => {
     dispatch(setCurrentTime(0))
-    dispatch(setCurrentTrackIndex(trackIndex === trackList.length - 1 ? 0 : trackIndex + 1))
+    dispatch(setCurrentTrackIndex(trackIndex === playList.length - 1 ? 0 : trackIndex + 1))
   }
 
   const handlePreviousTrack = (): void => {
     dispatch(setCurrentTime(0))
-    dispatch(setCurrentTrackIndex(trackIndex <= 0 ? trackList.length - 1 : trackIndex - 1))
+    dispatch(setCurrentTrackIndex(trackIndex <= 0 ? playList.length - 1 : trackIndex - 1))
   }
 
   return (
     <Card.Content className="w-full flex flex-col items-center border-t-transparent">
+      <Card.Header className='h-[245px] w-[280px]'>
+        <img src={playList[trackIndex].cover} alt="Album's image" className='w-full object-contain' />
+
+        <ThemeSwitcher />
+      </Card.Header>
+
       <div className="flex w-full flex-col gap-y-1">
         <div className="flex w-full items-center justify-between text-sm">
           <span>{formatTime(currentTime)}</span>

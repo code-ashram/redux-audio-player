@@ -5,7 +5,6 @@ import { useTheme } from '@/components/theme-provider'
 import { Card } from '@/components/ui/card'
 import PlayList from '@/components/PlayList.tsx'
 import ControlPanel from '@/components/ControlPanel.tsx'
-import PlayerHeader from '@/components/PlayerHeader.tsx'
 
 import trackList from '@/API/trackList.ts'
 
@@ -117,8 +116,6 @@ const App = () => {
   return (
     <Card className={`${theme} items-center relative`}>
       <audio ref={player} />
-
-      <PlayerHeader/>
 
       <ControlPanel player={player as RefObject<HTMLAudioElement>} />
 
