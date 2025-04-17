@@ -53,6 +53,7 @@ const playerSlice = createSlice({
     }
   },
   selectors: {
+    playerPlaylist: state => state.playlist,
     isPlaying: state => state.isPlaying,
     isLoop: state => state.isLoop,
     trackDuration: state => state.duration,
@@ -75,7 +76,7 @@ export const {
 
 export const {
   isPlaying, isLoop, trackDuration, trackCurrentTime, trackVolume,
-  currentTrackIndex, trackSelectedTime
+  currentTrackIndex, trackSelectedTime, playerPlaylist
 } = playerSlice.selectors
 
 export default playerSlice.reducer

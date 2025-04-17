@@ -1,19 +1,14 @@
 import { FC, useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
-import { currentTrackIndex } from '@/store/playerSlice.ts'
+import { useDispatch, useSelector } from 'react-redux'
+import { currentTrackIndex, playerPlaylist, setCurrentTime, setCurrentTrackIndex } from '@/store/playerSlice.ts'
 
 import { Card } from './ui/card'
 
-import Track from '@/models/Track.ts'
-
-type Props = {
-  list: Track[]
-  onChose: (trackIndex: number) => void
-}
-
-const PlayList: FC<Props> = ({ list, onChose }) => {
+const PlayList: FC = () => {
   const listRefs = useRef<(HTMLLIElement | null)[]>([])
   const trackIndex = useSelector(currentTrackIndex)
+  const playList = useSelector(playerPlaylist)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (listRefs.current[trackIndex]) {
@@ -22,14 +17,15 @@ const PlayList: FC<Props> = ({ list, onChose }) => {
   }, [trackIndex])
 
   const handleChoseTrack = (trackIndex: number) => {
-    onChose(trackIndex)
+    dispatch(setCurrentTime(0))
+    dispatch(setCurrentTrackIndex(trackIndex))
     listRefs.current[trackIndex]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
   return (
     <Card.Footer className="w-full border-t-transparent">
     <ul className="playlist border-1">
-      {list.map((track, index) =>
+      {playList.map((track, index) =>
         <li
           key={track.id}
           className={`listItem px-3 py-2 cursor-pointer border-b-1 ${trackIndex === index ? 'active' : null}`}

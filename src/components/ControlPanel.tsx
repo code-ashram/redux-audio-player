@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, RefObject } from 'react'
 
 import { Card } from './ui/card'
 import { Slider } from '@/components/ui/slider.tsx'
@@ -13,34 +13,81 @@ import RepeatTrackBtn from '@/assets/images/RepeatTrackBtn.svg?react'
 import { formatTime } from '@/utils/helpers.ts'
 
 import { IconVolumeDown, IconVolumeFull, IconVolumeUp } from 'justd-icons'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  currentTrackIndex,
+  isLoop,
+  isPlaying,
+  playTrack,
+  setCurrentTime,
+  setCurrentTrackIndex,
+  setVolume,
+  toggleLoop,
+  trackCurrentTime,
+  trackDuration,
+  trackVolume
+} from '@/store/playerSlice.ts'
+import trackList from '@/API/trackList.ts'
 
 type Props = {
-  currentTime: number,
-  duration: number,
-  isPlaying: boolean,
-  volume: number,
-  isLoop: boolean,
-  onLoop: () => void,
-  onPrev: () => void,
-  onPlay: () => void,
-  onNext: () => void,
-  onVolume: (value: number) => void,
-  onTime: (value: number) => void
+  player: RefObject<HTMLAudioElement>
 }
 
-const ControlPanel: FC<Props> = ({
-  currentTime,
-  duration,
-  isPlaying,
-  volume,
-  isLoop,
-  onLoop,
-  onPrev,
-  onPlay,
-  onNext,
-  onVolume,
-  onTime
-}) => {
+const ControlPanel: FC<Props> = ({ player }) => {
+  const play = useSelector(isPlaying)
+  const loop = useSelector(isLoop)
+  const duration = useSelector(trackDuration)
+  const currentTime = useSelector(trackCurrentTime)
+  const volume = useSelector(trackVolume)
+  const trackIndex = useSelector(currentTrackIndex)
+
+  const dispatch = useDispatch()
+
+  const handlePlayTrack = () => {
+    if (!player) return
+
+    if (player.current.paused) {
+      player.current.play().then(() => dispatch(playTrack(true)))
+    } else {
+      player.current.pause()
+      dispatch(playTrack(false))
+    }
+  }
+
+  const handleSelectTrackTime = (time: number) => {
+    if (!player) return
+
+    player.current.currentTime = time
+
+    setCurrentTime(time)
+  }
+
+  const handleChangeVolume = (value: number) => {
+    if (!player) return
+
+    player.current.volume = value
+
+    setVolume(value)
+  }
+
+  const handleSwitchLoop = () => {
+    if (!player) return
+
+    const newLoopValue = !player.current.loop
+    player.current.loop = newLoopValue
+
+    dispatch(toggleLoop(newLoopValue))
+  }
+
+  const handleNextTrack = (): void => {
+    dispatch(setCurrentTime(0))
+    dispatch(setCurrentTrackIndex(trackIndex === trackList.length - 1 ? 0 : trackIndex + 1))
+  }
+
+  const handlePreviousTrack = (): void => {
+    dispatch(setCurrentTime(0))
+    dispatch(setCurrentTrackIndex(trackIndex <= 0 ? trackList.length - 1 : trackIndex - 1))
+  }
 
   return (
     <Card.Content className="w-full flex flex-col items-center border-t-transparent">
@@ -57,27 +104,27 @@ const ControlPanel: FC<Props> = ({
                 value={currentTime}
                 minValue={0}
                 maxValue={duration}
-                onChange={(value) => onTime(value as number)}
+                onChange={(value) => handleSelectTrackTime(value as number)}
         />
       </div>
 
       <div className={'mt-7 flex w-full items-center justify-around'}>
-        <button onClick={() => onLoop()} className={`controlButton ${isLoop ? 'active' : null}`}>
+        <button onClick={handleSwitchLoop} className={`controlButton ${loop ? 'active' : null}`}>
           <RepeatTrackBtn />
         </button>
 
-        <button className="controlButton" onClick={() => onPrev()}>
+        <button className="controlButton" onClick={handlePreviousTrack}>
           <PrevTrackBtn />
         </button>
 
-        <button className="controlButton" onClick={() => onPlay()}>
-          {isPlaying
+        <button className="controlButton" onClick={handlePlayTrack}>
+          {play
             ? <PauseTrackBtn />
             : <PlayTrackBtn />
           }
         </button>
 
-        <button className="controlButton" onClick={() => onNext()}>
+        <button className="controlButton" onClick={handleNextTrack}>
           <NextTrackBtn />
         </button>
 
@@ -98,7 +145,7 @@ const ControlPanel: FC<Props> = ({
                 value={volume}
                 output="none"
                 orientation="vertical"
-                onChange={(value) => onVolume(value as number)}
+                onChange={(value) => handleChangeVolume(value as number)}
                 aria-labelledby="volume-label"
               />
 

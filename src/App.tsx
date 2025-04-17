@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { RefObject, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@/components/theme-provider'
 
@@ -22,25 +22,19 @@ import {
   setSelectedTime,
   setVolume,
   toggleLoop,
-  trackCurrentTime,
-  trackDuration,
-  trackSelectedTime,
-  trackVolume
+  trackSelectedTime
 } from '@/store/playerSlice.ts'
 
 const App = () => {
   const player = useRef<HTMLAudioElement | null>(null)
+
+  const loop = useSelector(isLoop)
   const dispatch = useDispatch()
   const { theme } = useTheme()
-  // const [selectedTime, setSelectedTime] = useState<number | null>(null)
 
-  const play = useSelector(isPlaying)
-  const loop = useSelector(isLoop)
-  const duration = useSelector(trackDuration)
-  const currentTime = useSelector(trackCurrentTime)
-  const volume = useSelector(trackVolume)
-  const trackIndex = useSelector(currentTrackIndex)
   const selectedTime = useSelector(trackSelectedTime)
+  const trackIndex = useSelector(currentTrackIndex)
+  const play = useSelector(isPlaying)
 
   useEffect(() => {
     const audio = player.current
@@ -120,75 +114,15 @@ const App = () => {
     }
   }, [trackIndex, play, selectedTime, dispatch])
 
-  const handlePlayTrack = () => {
-    if (!player.current) return
-
-    if (player.current.paused) {
-      player.current.play().then(() => dispatch(playTrack(true)))
-    } else {
-      player.current.pause()
-      dispatch(playTrack(false))
-    }
-  }
-
-  const handleSelectTrackTime = (time: number) => {
-    if (!player.current) return
-
-    player.current.currentTime = time
-
-    setCurrentTime(time)
-  }
-
-  const handleChangeVolume = (value: number) => {
-    if (!player.current) return
-
-    player.current.volume = value
-
-    setVolume(value)
-  }
-
-  const handleSwitchLoop = () => {
-    if (!player.current) return
-
-    const newLoopValue = !player.current.loop
-    player.current.loop = newLoopValue
-
-    dispatch(toggleLoop(newLoopValue))
-  }
-
-  const handleNextTrack = (): void => {
-    dispatch(setCurrentTrackIndex(trackIndex === trackList.length - 1 ? 0 : trackIndex + 1))
-  }
-
-  const handlePreviousTrack = (): void => {
-    dispatch(setCurrentTrackIndex(trackIndex <= 0 ? trackList.length - 1 : trackIndex - 1))
-  }
-
-  const handleChoseTrackFromList = (trackIndex: number) => {
-    dispatch(setCurrentTrackIndex(trackIndex))
-  }
-
   return (
     <Card className={`${theme} items-center relative`}>
-      <audio ref={player} src={trackList[trackIndex].source}></audio>
+      <audio ref={player} />
 
       <PlayerHeader/>
 
-      <ControlPanel
-        currentTime={currentTime}
-        volume={volume}
-        duration={duration}
-        isPlaying={play}
-        isLoop={loop}
-        onPrev={handlePreviousTrack}
-        onPlay={handlePlayTrack}
-        onNext={handleNextTrack}
-        onLoop={handleSwitchLoop}
-        onTime={handleSelectTrackTime}
-        onVolume={handleChangeVolume}
-      />
+      <ControlPanel player={player as RefObject<HTMLAudioElement>} />
 
-      <PlayList list={trackList} onChose={(trackIndex) => handleChoseTrackFromList(trackIndex)} />
+      <PlayList />
 
     </Card>
   )
