@@ -1,4 +1,6 @@
-import { FC, useRef, useState } from 'react'
+import { FC, useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
+import { currentTrackIndex } from '@/store/playerSlice.ts'
 
 import { Card } from './ui/card'
 
@@ -11,11 +13,16 @@ type Props = {
 
 const PlayList: FC<Props> = ({ list, onChose }) => {
   const listRefs = useRef<(HTMLLIElement | null)[]>([])
-  const [isActive, setIsActive] = useState<number | null>(null)
+  const trackIndex = useSelector(currentTrackIndex)
+
+  useEffect(() => {
+    if (listRefs.current[trackIndex]) {
+      listRefs.current[trackIndex]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [trackIndex])
 
   const handleChoseTrack = (trackIndex: number) => {
     onChose(trackIndex)
-    setIsActive(trackIndex)
     listRefs.current[trackIndex]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
@@ -25,7 +32,7 @@ const PlayList: FC<Props> = ({ list, onChose }) => {
       {list.map((track, index) =>
         <li
           key={track.id}
-          className={`listItem px-3 py-2 cursor-pointer border-b-1 ${isActive === index ? 'active' : null}`}
+          className={`listItem px-3 py-2 cursor-pointer border-b-1 ${trackIndex === index ? 'active' : null}`}
           ref={(el) => { listRefs.current[index] = el }}
           onClick={() => handleChoseTrack(index)}
         >
