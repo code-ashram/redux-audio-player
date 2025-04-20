@@ -9,6 +9,7 @@ import PrevTrackBtn from '@/assets/images/PrevTrackBtn.svg?react'
 import NextTrackBtn from '@/assets/images/NextTrackBtn.svg?react'
 import PauseTrackBtn from '@/assets/images/PauseTrackBtn.svg?react'
 import RepeatTrackBtn from '@/assets/images/RepeatTrackBtn.svg?react'
+import RepeatPlaylistBtn from '@/assets/images/RepeatPlaylistBtn.svg?react'
 import { ThemeSwitcher } from '@/components/ui/theme-switcher.tsx'
 
 import { formatTime } from '@/utils/helpers.ts'
@@ -21,13 +22,16 @@ import {
   isPlaying, playerPlaylist,
   playTrack,
   setCurrentTime,
-  setCurrentTrackIndex,
+  setCurrentTrackIndex, setRepeatMode,
   setVolume,
   toggleLoop,
   trackCurrentTime,
   trackDuration,
-  trackVolume
+  trackVolume,
+  playerRepeatMode
 } from '@/store/playerSlice.ts'
+import RepeatMode from '@/models/RepeatMode.ts'
+
 
 type Props = {
   player: RefObject<HTMLAudioElement>
@@ -41,6 +45,7 @@ const ControlPanel: FC<Props> = ({ player }) => {
   const volume = useSelector(trackVolume)
   const trackIndex = useSelector(currentTrackIndex)
   const playList = useSelector(playerPlaylist)
+  const repeatMode = useSelector(playerRepeatMode)
 
   const dispatch = useDispatch()
 
@@ -78,6 +83,8 @@ const ControlPanel: FC<Props> = ({ player }) => {
     player.current.loop = newLoopValue
 
     dispatch(toggleLoop(newLoopValue))
+
+    dispatch(setRepeatMode())
   }
 
   const handleNextTrack = (): void => {
@@ -117,7 +124,11 @@ const ControlPanel: FC<Props> = ({ player }) => {
 
       <div className={'mt-7 flex w-full items-center justify-around'}>
         <button onClick={handleSwitchLoop} className={`controlButton ${loop ? 'active' : null}`}>
-          <RepeatTrackBtn />
+          {repeatMode === RepeatMode.noRepeat || repeatMode === RepeatMode.repeatTrack
+            ? <RepeatTrackBtn />
+            : <RepeatPlaylistBtn/>
+          }
+
         </button>
 
         <button className="controlButton" onClick={handlePreviousTrack}>

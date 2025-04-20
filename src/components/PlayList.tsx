@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { currentTrackIndex, playerPlaylist, setCurrentTime, setCurrentTrackIndex } from '@/store/playerSlice.ts'
 
 import { Card } from './ui/card'
-import RepeatController from '@/components/RepeatController.tsx'
 
 const PlayList: FC = () => {
   const listRefs = useRef<(HTMLLIElement | null)[]>([])
@@ -37,7 +36,6 @@ const PlayList: FC = () => {
         </li>)}
     </ul>
 
-      <RepeatController />
     </Card.Footer>
   )
 }
