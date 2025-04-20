@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Track from '@/models/Track.ts'
 
 import trackList from '@/API/trackList.ts'
+import RepeatMode from '@/models/RepeatMode.ts'
 
 interface PlayerState {
   playlist: Track[]
@@ -13,6 +14,7 @@ interface PlayerState {
   volume: number
   currentTrackIndex: number
   selectedTime: number | null
+  repeatMode: RepeatMode
 }
 
 const initialState: PlayerState = {
@@ -23,7 +25,8 @@ const initialState: PlayerState = {
   currentTime: 0,
   volume: 0.65,
   currentTrackIndex: 0,
-  selectedTime: null
+  selectedTime: null,
+  repeatMode: RepeatMode.noRepeat
 }
 
 const playerSlice = createSlice({
@@ -50,6 +53,21 @@ const playerSlice = createSlice({
     },
     setSelectedTime: (state, { payload }: PayloadAction<number | null>) => {
       state.selectedTime = payload
+    },
+    setRepeatMode: (state) => {
+      switch (state.repeatMode) {
+        case RepeatMode.noRepeat:
+          state.repeatMode = RepeatMode.repeatTrack
+          break
+        case RepeatMode.repeatTrack:
+          state.repeatMode = RepeatMode.repeatPlaylist
+          break
+        case RepeatMode.repeatPlaylist:
+          state.repeatMode = RepeatMode.noRepeat
+          break
+        default:
+          state.repeatMode = RepeatMode.noRepeat
+      }
     }
   },
   selectors: {
@@ -60,7 +78,8 @@ const playerSlice = createSlice({
     trackCurrentTime: state => state.currentTime,
     trackVolume: state => state.volume,
     currentTrackIndex: state => state.currentTrackIndex,
-    trackSelectedTime: state => state.selectedTime
+    trackSelectedTime: state => state.selectedTime,
+    repeatMode: state => state.repeatMode
   }
 })
 
@@ -71,12 +90,13 @@ export const {
   setCurrentTime,
   setVolume,
   setCurrentTrackIndex,
-  setSelectedTime
+  setSelectedTime,
+  setRepeatMode
 } = playerSlice.actions
 
 export const {
   isPlaying, isLoop, trackDuration, trackCurrentTime, trackVolume,
-  currentTrackIndex, trackSelectedTime, playerPlaylist
+  currentTrackIndex, trackSelectedTime, playerPlaylist, repeatMode
 } = playerSlice.selectors
 
 export default playerSlice.reducer
