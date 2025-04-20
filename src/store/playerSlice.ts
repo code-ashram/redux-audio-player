@@ -58,15 +58,15 @@ const playerSlice = createSlice({
       switch (state.repeatMode) {
         case RepeatMode.noRepeat:
           state.repeatMode = RepeatMode.repeatTrack
-          state.isLoop = true // включаем loop
+          state.isLoop = true
           break
         case RepeatMode.repeatTrack:
           state.repeatMode = RepeatMode.repeatPlaylist
-          state.isLoop = false // выключаем loop
+          state.isLoop = false
           break
         case RepeatMode.repeatPlaylist:
           state.repeatMode = RepeatMode.noRepeat
-          state.isLoop = false // выключаем loop
+          state.isLoop = false
           break
         default:
           state.repeatMode = RepeatMode.noRepeat

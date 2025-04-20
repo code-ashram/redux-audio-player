@@ -49,7 +49,6 @@ const trackList: Track[] = [
     album: 'Incipit Satan',
   cover: '/public/gorgoroth.jpg',
   },
-
 ]
 
 export default trackList

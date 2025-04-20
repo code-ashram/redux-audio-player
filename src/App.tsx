@@ -6,14 +6,13 @@ import { Card } from '@/components/ui/card'
 import PlayList from '@/components/PlayList.tsx'
 import ControlPanel from '@/components/ControlPanel.tsx'
 
-import trackList from '@/API/trackList.ts'
-
 import './App.scss'
 
 import {
   currentTrackIndex,
   isLoop,
   isPlaying,
+  playerPlaylist,
   playerRepeatMode,
   playTrack,
   setCurrentTime,
@@ -32,11 +31,11 @@ const App = () => {
   const loop = useSelector(isLoop)
   const dispatch = useDispatch()
   const { theme } = useTheme()
-
   const selectedTime = useSelector(trackSelectedTime)
   const trackIndex = useSelector(currentTrackIndex)
   const play = useSelector(isPlaying)
   const repeatMode = useSelector(playerRepeatMode)
+  const playList = useSelector(playerPlaylist)
 
 
   useEffect(() => {
@@ -63,9 +62,17 @@ const App = () => {
     const handleEnded = () => {
       if (!player.current || player.current.loop) return
 
-      return repeatMode === RepeatMode.repeatPlaylist
-        ? dispatch(setCurrentTrackIndex(trackIndex === trackList.length - 1 ? 0 : trackIndex + 1))
-        : dispatch(playTrack(false))
+      if (repeatMode === RepeatMode.repeatPlaylist || repeatMode === RepeatMode.noRepeat) {
+        dispatch(setCurrentTrackIndex(trackIndex === playList.length - 1 ? 0 : trackIndex + 1))
+      } else {
+        dispatch(playTrack(false))
+      }
+
+      if (repeatMode === RepeatMode.noRepeat && trackIndex === playList.length - 1) {
+        dispatch(setCurrentTrackIndex(0))
+        dispatch(setCurrentTime(0))
+        dispatch(playTrack(false))
+      }
     }
 
     audio.addEventListener('loadedmetadata', handleLoadedMetadata)
@@ -81,13 +88,13 @@ const App = () => {
       audio.removeEventListener('volumechange', handleChangeVolume)
       audio.removeEventListener('loop', switchLoop)
     }
-  }, [trackIndex, dispatch, loop, repeatMode])
+  }, [trackIndex, dispatch, loop, repeatMode, playList])
 
   useEffect(() => {
     const audio = player.current
     if (!audio) return
 
-    const newSrc = trackList[trackIndex].source
+    const newSrc = playList[trackIndex].source
 
     if (!audio.src.includes(newSrc)) {
       audio.src = newSrc
@@ -114,7 +121,7 @@ const App = () => {
         audio.play().catch((err) => console.warn('Autoplay error:', err))
       }
     }
-  }, [trackIndex, play, selectedTime, dispatch])
+  }, [trackIndex, play, selectedTime, dispatch, playList])
 
   useEffect(() => {
     if (player.current) {
