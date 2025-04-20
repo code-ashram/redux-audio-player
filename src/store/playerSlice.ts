@@ -58,16 +58,22 @@ const playerSlice = createSlice({
       switch (state.repeatMode) {
         case RepeatMode.noRepeat:
           state.repeatMode = RepeatMode.repeatTrack
+          state.isLoop = true // включаем loop
           break
         case RepeatMode.repeatTrack:
           state.repeatMode = RepeatMode.repeatPlaylist
+          state.isLoop = false // выключаем loop
           break
         case RepeatMode.repeatPlaylist:
           state.repeatMode = RepeatMode.noRepeat
+          state.isLoop = false // выключаем loop
           break
         default:
           state.repeatMode = RepeatMode.noRepeat
+          state.isLoop = false
       }
+
+      console.log('New RepeatMode:', state.repeatMode, '| Loop:', state.isLoop)
     }
   },
   selectors: {

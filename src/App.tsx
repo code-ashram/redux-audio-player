@@ -14,6 +14,7 @@ import {
   currentTrackIndex,
   isLoop,
   isPlaying,
+  playerRepeatMode,
   playTrack,
   setCurrentTime,
   setCurrentTrackIndex,
@@ -23,6 +24,7 @@ import {
   toggleLoop,
   trackSelectedTime
 } from '@/store/playerSlice.ts'
+import RepeatMode from '@/models/RepeatMode.ts'
 
 const App = () => {
   const player = useRef<HTMLAudioElement | null>(null)
@@ -34,6 +36,8 @@ const App = () => {
   const selectedTime = useSelector(trackSelectedTime)
   const trackIndex = useSelector(currentTrackIndex)
   const play = useSelector(isPlaying)
+  const repeatMode = useSelector(playerRepeatMode)
+
 
   useEffect(() => {
     const audio = player.current
@@ -57,12 +61,11 @@ const App = () => {
     }
 
     const handleEnded = () => {
-      if (loop && player.current) {
-        dispatch(setCurrentTime(0))
-        dispatch(playTrack(true))
-      } else {
-        dispatch(setCurrentTrackIndex(trackIndex === trackList.length - 1 ? 0 : trackIndex + 1))
-      }
+      if (!player.current || player.current.loop) return
+
+      return repeatMode === RepeatMode.repeatPlaylist
+        ? dispatch(setCurrentTrackIndex(trackIndex === trackList.length - 1 ? 0 : trackIndex + 1))
+        : dispatch(playTrack(false))
     }
 
     audio.addEventListener('loadedmetadata', handleLoadedMetadata)
@@ -78,7 +81,7 @@ const App = () => {
       audio.removeEventListener('volumechange', handleChangeVolume)
       audio.removeEventListener('loop', switchLoop)
     }
-  }, [trackIndex, dispatch, loop])
+  }, [trackIndex, dispatch, loop, repeatMode])
 
   useEffect(() => {
     const audio = player.current
@@ -112,6 +115,12 @@ const App = () => {
       }
     }
   }, [trackIndex, play, selectedTime, dispatch])
+
+  useEffect(() => {
+    if (player.current) {
+      player.current.loop = repeatMode === RepeatMode.repeatTrack
+    }
+  }, [repeatMode])
 
   return (
     <Card className={`${theme} items-center relative`}>

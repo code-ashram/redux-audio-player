@@ -1,4 +1,19 @@
 import { FC, RefObject } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  currentTrackIndex,
+  isPlaying,
+  playerPlaylist,
+  playerRepeatMode,
+  playTrack,
+  setCurrentTime,
+  setCurrentTrackIndex,
+  setRepeatMode,
+  setVolume,
+  trackCurrentTime,
+  trackDuration,
+  trackVolume
+} from '@/store/playerSlice.ts'
 
 import { Card } from './ui/card'
 import { Slider } from '@/components/ui/slider.tsx'
@@ -12,26 +27,10 @@ import RepeatTrackBtn from '@/assets/images/RepeatTrackBtn.svg?react'
 import RepeatPlaylistBtn from '@/assets/images/RepeatPlaylistBtn.svg?react'
 import { ThemeSwitcher } from '@/components/ui/theme-switcher.tsx'
 
+import RepeatMode from '@/models/RepeatMode.ts'
 import { formatTime } from '@/utils/helpers.ts'
 
 import { IconVolumeDown, IconVolumeFull, IconVolumeUp } from 'justd-icons'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  currentTrackIndex,
-  isLoop,
-  isPlaying, playerPlaylist,
-  playTrack,
-  setCurrentTime,
-  setCurrentTrackIndex, setRepeatMode,
-  setVolume,
-  toggleLoop,
-  trackCurrentTime,
-  trackDuration,
-  trackVolume,
-  playerRepeatMode
-} from '@/store/playerSlice.ts'
-import RepeatMode from '@/models/RepeatMode.ts'
-
 
 type Props = {
   player: RefObject<HTMLAudioElement>
@@ -39,7 +38,6 @@ type Props = {
 
 const ControlPanel: FC<Props> = ({ player }) => {
   const play = useSelector(isPlaying)
-  const loop = useSelector(isLoop)
   const duration = useSelector(trackDuration)
   const currentTime = useSelector(trackCurrentTime)
   const volume = useSelector(trackVolume)
@@ -77,13 +75,6 @@ const ControlPanel: FC<Props> = ({ player }) => {
   }
 
   const handleSwitchLoop = () => {
-    if (!player) return
-
-    const newLoopValue = !player.current.loop
-    player.current.loop = newLoopValue
-
-    dispatch(toggleLoop(newLoopValue))
-
     dispatch(setRepeatMode())
   }
 
@@ -123,12 +114,15 @@ const ControlPanel: FC<Props> = ({ player }) => {
       </div>
 
       <div className={'mt-7 flex w-full items-center justify-around'}>
-        <button onClick={handleSwitchLoop} className={`controlButton ${loop ? 'active' : null}`}>
-          {repeatMode === RepeatMode.noRepeat || repeatMode === RepeatMode.repeatTrack
+        <button
+          className={`controlButton ${repeatMode !== RepeatMode.noRepeat ? 'active' : null}`}
+          onClick={handleSwitchLoop}
+        >
+          {
+            repeatMode === RepeatMode.noRepeat || repeatMode === RepeatMode.repeatTrack
             ? <RepeatTrackBtn />
             : <RepeatPlaylistBtn/>
           }
-
         </button>
 
         <button className="controlButton" onClick={handlePreviousTrack}>
