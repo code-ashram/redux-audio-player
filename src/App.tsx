@@ -28,8 +28,8 @@ import RepeatMode from '@/models/RepeatMode.ts'
 const App = () => {
   const player = useRef<HTMLAudioElement | null>(null)
 
-  const loop = useSelector(isLoop)
   const dispatch = useDispatch()
+  const loop = useSelector(isLoop)
   const { theme } = useTheme()
   const selectedTime = useSelector(trackSelectedTime)
   const trackIndex = useSelector(currentTrackIndex)
@@ -136,7 +136,6 @@ const App = () => {
       <ControlPanel player={player as RefObject<HTMLAudioElement>} />
 
       <PlayList />
-
     </Card>
   )
 }
