@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import Track from '@/models/Track.ts'
 
-import trackList from '@/API/trackList.ts'
+import trackList from '@/api/trackList.ts'
 import RepeatMode from '@/models/RepeatMode.ts'
 
 interface PlayerState {
@@ -88,6 +88,9 @@ const playerSlice = createSlice({
     playerRepeatMode: state => state.repeatMode
   }
 })
+
+export const CHANGE_VOLUME = 'player/setVolume'
+export const changeVolume = createAction(CHANGE_VOLUME)
 
 export const {
   playTrack,

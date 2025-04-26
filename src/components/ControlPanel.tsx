@@ -104,7 +104,7 @@ const ControlPanel: FC<Props> = ({ player }) => {
         </div>
 
         <Slider className="trackSlider"
-                aria-label="volume"
+                aria-label="time"
                 output="none"
                 value={currentTime}
                 minValue={0}

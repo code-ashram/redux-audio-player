@@ -19,7 +19,7 @@ import {
   setCurrentTrackIndex,
   setDuration,
   setSelectedTime,
-  setVolume,
+  // setVolume,
   toggleLoop,
   trackSelectedTime
 } from '@/store/playerSlice.ts'
@@ -51,9 +51,9 @@ const App = () => {
       dispatch(setCurrentTime(audio.currentTime))
     }
 
-    const handleChangeVolume = () => {
-      dispatch(setVolume(audio.volume))
-    }
+    // const handleChangeVolume = () => {
+    //   dispatch(setVolume(audio.volume))
+    // }
 
     const switchLoop = () => {
       dispatch(toggleLoop(audio.loop))
@@ -78,14 +78,14 @@ const App = () => {
     audio.addEventListener('loadedmetadata', handleLoadedMetadata)
     audio.addEventListener('timeupdate', handleTimeUpdate)
     audio.addEventListener('ended', handleEnded)
-    audio.addEventListener('volumechange', handleChangeVolume)
+    // audio.addEventListener('volumechange', handleChangeVolume)
     audio.addEventListener('loop', switchLoop)
 
     return () => {
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
       audio.removeEventListener('timeupdate', handleTimeUpdate)
       audio.removeEventListener('ended', handleEnded)
-      audio.removeEventListener('volumechange', handleChangeVolume)
+      // audio.removeEventListener('volumechange', handleChangeVolume)
       audio.removeEventListener('loop', switchLoop)
     }
   }, [trackIndex, dispatch, loop, repeatMode, playList])
