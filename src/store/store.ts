@@ -1,12 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
 
-import playerReducer, { CHANGE_VOLUME, changeVolume } from './playerSlice.ts'
-import { takeEvery } from 'redux-saga/effects'
-
-function * sagas () {
-  yield takeEvery(CHANGE_VOLUME, changeVolume)
-}
+import playerReducer from './playerSlice.ts'
+import { audioSaga } from '@/sagas.ts'
 
 const sagaMiddleware = createSagaMiddleware()
 const store = configureStore({
@@ -16,7 +12,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware)
 })
-sagaMiddleware.run(sagas)
+sagaMiddleware.run(audioSaga)
 
 export type RootState = ReturnType<typeof store.getState>
 

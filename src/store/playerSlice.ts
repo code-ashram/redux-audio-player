@@ -1,4 +1,4 @@
-import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import Track from '@/models/Track.ts'
 
@@ -33,8 +33,14 @@ const playerSlice = createSlice({
   name: 'player',
   initialState,
   reducers: {
-    playTrack: (state, { payload }: PayloadAction<boolean>) => {
-      state.isPlaying = payload
+    playAudio: (state) => {
+      state.isPlaying = true;
+    },
+    pauseAudio: (state) => {
+      state.isPlaying = false;
+    },
+    toggleAudio: (state) => {
+      state.isPlaying = !state.isPlaying;
     },
     toggleLoop: (state, { payload }: PayloadAction<boolean>) => {
       state.isLoop = payload
@@ -89,11 +95,10 @@ const playerSlice = createSlice({
   }
 })
 
-export const CHANGE_VOLUME = 'player/setVolume'
-export const changeVolume = createAction(CHANGE_VOLUME)
-
 export const {
-  playTrack,
+  playAudio,
+  pauseAudio,
+  toggleAudio,
   toggleLoop,
   setDuration,
   setCurrentTime,

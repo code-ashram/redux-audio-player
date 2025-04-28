@@ -1,15 +1,14 @@
-import { FC, RefObject } from 'react'
+import { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   currentTrackIndex,
   isPlaying,
   playerPlaylist,
   playerRepeatMode,
-  playTrack,
   setCurrentTime,
   setCurrentTrackIndex,
-  setRepeatMode,
-  setVolume,
+  setRepeatMode, setVolume,
+  toggleAudio,
   trackCurrentTime,
   trackDuration,
   trackVolume
@@ -31,12 +30,9 @@ import RepeatMode from '@/models/RepeatMode.ts'
 import { formatTime } from '@/utils/helpers.ts'
 
 import { IconVolumeDown, IconVolumeFull, IconVolumeUp } from 'justd-icons'
+import { player } from '@/player.ts'
 
-type Props = {
-  player: RefObject<HTMLAudioElement>
-}
-
-const ControlPanel: FC<Props> = ({ player }) => {
+const ControlPanel: FC = () => {
   const play = useSelector(isPlaying)
   const duration = useSelector(trackDuration)
   const currentTime = useSelector(trackCurrentTime)
@@ -44,34 +40,10 @@ const ControlPanel: FC<Props> = ({ player }) => {
   const trackIndex = useSelector(currentTrackIndex)
   const playList = useSelector(playerPlaylist)
   const repeatMode = useSelector(playerRepeatMode)
-
   const dispatch = useDispatch()
 
   const handlePlayTrack = () => {
-    if (!player) return
-
-    if (player.current.paused) {
-      player.current.play().then(() => dispatch(playTrack(true)))
-    } else {
-      player.current.pause()
-      dispatch(playTrack(false))
-    }
-  }
-
-  const handleSelectTrackTime = (time: number) => {
-    if (!player) return
-
-    player.current.currentTime = time
-
-    setCurrentTime(time)
-  }
-
-  const handleChangeVolume = (value: number) => {
-    if (!player) return
-
-    player.current.volume = value
-
-    setVolume(value)
+    dispatch(toggleAudio())
   }
 
   const handleSwitchLoop = () => {
@@ -88,10 +60,17 @@ const ControlPanel: FC<Props> = ({ player }) => {
     dispatch(setCurrentTrackIndex(trackIndex <= 0 ? playList.length - 1 : trackIndex - 1))
   }
 
+  const handleChangeVolume = (value: number) => {
+    if (!player) return
+
+    player.volume = volume
+    dispatch(setVolume(value))
+  }
+
   return (
     <Card.Content className="w-full flex flex-col items-center border-t-transparent">
-      <Card.Header className='h-[245px] w-[280px]'>
-        <img src={playList[trackIndex].cover} alt="Album's image" className='w-full object-contain' />
+      <Card.Header className="h-[245px] w-[280px]">
+        <img src={playList[trackIndex].cover} alt="Album's image" className="w-full object-contain" />
 
         <ThemeSwitcher />
       </Card.Header>
@@ -109,7 +88,7 @@ const ControlPanel: FC<Props> = ({ player }) => {
                 value={currentTime}
                 minValue={0}
                 maxValue={duration}
-                onChange={(value) => handleSelectTrackTime(value as number)}
+                onChange={() => console.log(currentTime)}
         />
       </div>
 
@@ -120,8 +99,8 @@ const ControlPanel: FC<Props> = ({ player }) => {
         >
           {
             repeatMode === RepeatMode.noRepeat || repeatMode === RepeatMode.repeatTrack
-            ? <RepeatTrackBtn />
-            : <RepeatPlaylistBtn/>
+              ? <RepeatTrackBtn />
+              : <RepeatPlaylistBtn />
           }
         </button>
 

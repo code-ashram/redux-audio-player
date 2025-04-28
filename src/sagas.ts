@@ -1,12 +1,20 @@
-import { put } from 'redux-saga/effects'
-import { setVolume } from '@/store/playerSlice.ts'
+import { takeEvery, put } from 'redux-saga/effects'
+import { playAudio, pauseAudio, toggleAudio } from '@/store/playerSlice.ts'
 
-export function * changeVolumeSaga () {
-  console.log('changeVolumeSaga')
-  const payload = 0
-  yield put(setVolume(payload))
+import { player } from './player'
+
+function * handleToggleAudio () {
+  if (!player) return
+
+  if (player.paused) {
+    yield player.play()
+    yield put(playAudio())
+  } else {
+    player.pause()
+    yield put(pauseAudio())
+  }
 }
 
-export function * watchChangeVolumeSaga () {
-
+export function * audioSaga () {
+  yield takeEvery(toggleAudio.type, handleToggleAudio)
 }
