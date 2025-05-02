@@ -42,6 +42,24 @@ const playerSlice = createSlice({
     toggleAudio: (state) => {
       state.isPlaying = !state.isPlaying;
     },
+    nextTrackRequest: () => {
+
+    },
+    prevTrackRequest: () => {
+
+    },
+    choseTrack: (state, { payload }: PayloadAction<number>) => {
+
+    },
+    trackEnded: () => {
+
+    },
+    loadTrack: () => {
+      // Ничего не делает — вся логика в саге
+    },
+    initializePlayer: () => {
+      // просто триггер для саги
+    },
     toggleLoop: (state, { payload }: PayloadAction<boolean>) => {
       state.isLoop = payload
     },
@@ -96,6 +114,7 @@ const playerSlice = createSlice({
 })
 
 export const {
+  choseTrack,
   playAudio,
   pauseAudio,
   toggleAudio,
@@ -105,7 +124,11 @@ export const {
   setVolume,
   setCurrentTrackIndex,
   setSelectedTime,
-  setRepeatMode
+  setRepeatMode,
+  nextTrackRequest,
+  prevTrackRequest,
+  loadTrack,
+  initializePlayer
 } = playerSlice.actions
 
 export const {

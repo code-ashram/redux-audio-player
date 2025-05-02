@@ -2,11 +2,10 @@ import { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   currentTrackIndex,
-  isPlaying,
+  isPlaying, nextTrackRequest,
   playerPlaylist,
-  playerRepeatMode,
+  playerRepeatMode, prevTrackRequest,
   setCurrentTime,
-  setCurrentTrackIndex,
   setRepeatMode, setVolume,
   toggleAudio,
   trackCurrentTime,
@@ -52,12 +51,12 @@ const ControlPanel: FC = () => {
 
   const handleNextTrack = (): void => {
     dispatch(setCurrentTime(0))
-    dispatch(setCurrentTrackIndex(trackIndex === playList.length - 1 ? 0 : trackIndex + 1))
+    dispatch(nextTrackRequest())
   }
 
   const handlePreviousTrack = (): void => {
     dispatch(setCurrentTime(0))
-    dispatch(setCurrentTrackIndex(trackIndex <= 0 ? playList.length - 1 : trackIndex - 1))
+    dispatch(prevTrackRequest())
   }
 
   const handleChangeVolume = (value: number) => {

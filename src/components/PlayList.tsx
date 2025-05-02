@@ -1,6 +1,10 @@
-import { FC, useEffect, useRef } from 'react'
+import { FC, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { currentTrackIndex, playerPlaylist, setCurrentTime, setCurrentTrackIndex } from '@/store/playerSlice.ts'
+import {
+  choseTrack,
+  currentTrackIndex,
+  playerPlaylist,
+} from '@/store/playerSlice.ts'
 
 import { Card } from './ui/card'
 
@@ -10,15 +14,9 @@ const PlayList: FC = () => {
   const playList = useSelector(playerPlaylist)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    if (listRefs.current[trackIndex]) {
-      listRefs.current[trackIndex]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    }
-  }, [trackIndex])
 
   const handleChoseTrack = (trackIndex: number) => {
-    dispatch(setCurrentTime(0))
-    dispatch(setCurrentTrackIndex(trackIndex))
+    dispatch(choseTrack(trackIndex))
     listRefs.current[trackIndex]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
