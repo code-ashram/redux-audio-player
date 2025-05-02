@@ -60,6 +60,9 @@ const playerSlice = createSlice({
     initializePlayer: () => {
       // просто триггер для саги
     },
+    seekTo: (state, { payload }: PayloadAction<number>) => {
+
+    },
     toggleLoop: (state, { payload }: PayloadAction<boolean>) => {
       state.isLoop = payload
     },
@@ -128,7 +131,8 @@ export const {
   nextTrackRequest,
   prevTrackRequest,
   loadTrack,
-  initializePlayer
+  initializePlayer,
+  seekTo,
 } = playerSlice.actions
 
 export const {

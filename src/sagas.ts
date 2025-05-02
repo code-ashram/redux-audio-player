@@ -1,4 +1,4 @@
-import { delay, put, select, takeEvery } from 'redux-saga/effects'
+import { delay, put, select, takeEvery, debounce } from 'redux-saga/effects'
 import {
   choseTrack,
   currentTrackIndex,
@@ -8,7 +8,7 @@ import {
   pauseAudio,
   playAudio,
   playerPlaylist,
-  prevTrackRequest,
+  prevTrackRequest, seekTo,
   setCurrentTime,
   setCurrentTrackIndex,
   toggleAudio
@@ -151,6 +151,22 @@ export function* handleChooseTrack({ payload: chosenIndex }: PayloadAction<numbe
   }
 }
 
+function * handleSeekTo ({ payload }: PayloadAction<number>) {
+  const time = payload
+
+  console.log(`Saga: Seeking to ${time}`)
+
+  const duration: number = yield select((state) => state.player.duration)
+
+  if (player && !isNaN(time) && time >= 0 && time <= duration) {
+    player.currentTime = time
+    yield put(setCurrentTime(time))
+  } else {
+    console.warn(`Saga: Invalid seek time: ${time}, duration: ${duration}`)
+  }
+}
+
+
 export function * audioSaga () {
   yield takeEvery(nextTrackRequest.type, handleNextTrack)
   yield takeEvery(prevTrackRequest.type, handlePrevTrack)
@@ -158,4 +174,5 @@ export function * audioSaga () {
   yield takeEvery(toggleAudio.type, handleToggleAudio)
   yield takeEvery(initializePlayer.type, handleInitializePlayer)
   yield takeEvery(choseTrack.type, handleChooseTrack)
+  yield debounce(300, seekTo.type, handleSeekTo);
 }

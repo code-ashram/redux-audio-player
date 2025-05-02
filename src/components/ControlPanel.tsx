@@ -4,7 +4,7 @@ import {
   currentTrackIndex,
   isPlaying, nextTrackRequest,
   playerPlaylist,
-  playerRepeatMode, prevTrackRequest,
+  playerRepeatMode, prevTrackRequest, seekTo,
   setCurrentTime,
   setRepeatMode, setVolume,
   toggleAudio,
@@ -66,6 +66,14 @@ const ControlPanel: FC = () => {
     dispatch(setVolume(value))
   }
 
+  const handleTimeChange = (value: number | number[]) => {
+    const newTime = Array.isArray(value) ? value[0] : value;
+    if (!isNaN(newTime)) {
+      dispatch(seekTo(newTime));
+    }
+  }
+
+
   return (
     <Card.Content className="w-full flex flex-col items-center border-t-transparent">
       <Card.Header className="h-[245px] w-[280px]">
@@ -87,7 +95,7 @@ const ControlPanel: FC = () => {
                 value={currentTime}
                 minValue={0}
                 maxValue={duration}
-                onChange={() => console.log(currentTime)}
+                onChange={handleTimeChange}
         />
       </div>
 
