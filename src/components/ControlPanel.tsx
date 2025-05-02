@@ -73,6 +73,7 @@ const ControlPanel: FC = () => {
     }
   }
 
+  console.log(duration)
 
   return (
     <Card.Content className="w-full flex flex-col items-center border-t-transparent">

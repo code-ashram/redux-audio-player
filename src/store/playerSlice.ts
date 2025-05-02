@@ -39,9 +39,7 @@ const playerSlice = createSlice({
     pauseAudio: (state) => {
       state.isPlaying = false;
     },
-    toggleAudio: (state) => {
-      state.isPlaying = !state.isPlaying;
-    },
+    toggleAudio: () => {},
     nextTrackRequest: () => {
 
     },
@@ -51,18 +49,13 @@ const playerSlice = createSlice({
     choseTrack: (state, { payload }: PayloadAction<number>) => {
 
     },
-    trackEnded: () => {
-
+    trackEnded: (state) => {
+      state.isPlaying = false;
+      console.log('Reducer: Track ended');
     },
-    loadTrack: () => {
-      // Ничего не делает — вся логика в саге
-    },
-    initializePlayer: () => {
-      // просто триггер для саги
-    },
-    seekTo: (state, { payload }: PayloadAction<number>) => {
-
-    },
+    loadTrack: () => {},
+    initializePlayer: () => {},
+    seekTo: (state, { payload }: PayloadAction<number>) => {},
     toggleLoop: (state, { payload }: PayloadAction<boolean>) => {
       state.isLoop = payload
     },
@@ -70,7 +63,7 @@ const playerSlice = createSlice({
       state.duration = payload
     },
     setCurrentTime: (state, { payload }: PayloadAction<number>) => {
-      state.currentTime = payload
+      state.currentTime = Math.round(payload)
     },
     setVolume: (state, { payload }: PayloadAction<number>) => {
       state.volume = payload
@@ -133,6 +126,7 @@ export const {
   loadTrack,
   initializePlayer,
   seekTo,
+  trackEnded,
 } = playerSlice.actions
 
 export const {
