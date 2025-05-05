@@ -15,7 +15,10 @@ import {
   setCurrentTime,
   setCurrentTrackIndex,
   setDuration,
+  setRepeatMode,
   toggleAudio,
+  toggleLoop,
+  toggleRepeatMode,
   trackDuration,
   trackEnded
 } from '@/store/playerSlice.ts'
@@ -287,6 +290,36 @@ function * handleSeekTo ({ payload }: PayloadAction<number>) {
   }
 }
 
+function * handleRepeatMode () {
+  if (!player) return
+
+  const currentMode: RepeatMode = yield select(playerRepeatMode)
+
+  let nextMode: RepeatMode
+  let shouldLoop: boolean
+
+  switch (currentMode) {
+    case RepeatMode.noRepeat:
+      nextMode = RepeatMode.repeatTrack
+      shouldLoop = true
+      break
+    case RepeatMode.repeatTrack:
+      nextMode = RepeatMode.repeatPlaylist
+      shouldLoop = false
+      break
+    case RepeatMode.repeatPlaylist:
+    default:
+      nextMode = RepeatMode.noRepeat
+      shouldLoop = false
+      break
+  }
+
+  yield put(setRepeatMode(nextMode))
+  yield put(toggleLoop(shouldLoop))
+  player.loop = shouldLoop
+
+  console.log(`New repeatMode: ${nextMode}, isLoop: ${shouldLoop}`)
+}
 
 export function * audioSaga () {
   yield takeEvery(playAudio.type, handlePlayAudio)
@@ -294,7 +327,7 @@ export function * audioSaga () {
   yield takeEvery(loadTrack.type, handleLoadTrack)
   yield takeEvery(trackEnded.type, handleTrackEnded)
   yield takeEvery(toggleAudio.type, handleToggleAudio)
-
+  yield takeEvery(toggleRepeatMode.type, handleRepeatMode)
 
   yield takeEvery(nextTrackRequest.type, handleNextTrack)
   yield takeEvery(prevTrackRequest.type, handlePrevTrack)

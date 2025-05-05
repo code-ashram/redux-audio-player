@@ -6,8 +6,8 @@ import {
   playerPlaylist,
   playerRepeatMode, prevTrackRequest, seekTo,
   setCurrentTime,
-  setRepeatMode, setVolume,
-  toggleAudio,
+  setVolume,
+  toggleAudio, toggleRepeatMode,
   trackCurrentTime,
   trackDuration,
   trackVolume
@@ -46,7 +46,8 @@ const ControlPanel: FC = () => {
   }
 
   const handleSwitchLoop = () => {
-    dispatch(setRepeatMode())
+    // dispatch(setRepeatMode())
+    dispatch(toggleRepeatMode())
   }
 
   const handleNextTrack = (): void => {

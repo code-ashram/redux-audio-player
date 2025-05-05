@@ -49,6 +49,9 @@ const playerSlice = createSlice({
     choseTrack: (state, { payload }: PayloadAction<number>) => {
 
     },
+    toggleRepeatMode: () => {
+
+    },
     trackEnded: (state) => {
       state.isPlaying = false;
       console.log('Reducer: Track ended');
@@ -74,26 +77,8 @@ const playerSlice = createSlice({
     setSelectedTime: (state, { payload }: PayloadAction<number | null>) => {
       state.selectedTime = payload
     },
-    setRepeatMode: (state) => {
-      switch (state.repeatMode) {
-        case RepeatMode.noRepeat:
-          state.repeatMode = RepeatMode.repeatTrack
-          state.isLoop = true
-          break
-        case RepeatMode.repeatTrack:
-          state.repeatMode = RepeatMode.repeatPlaylist
-          state.isLoop = false
-          break
-        case RepeatMode.repeatPlaylist:
-          state.repeatMode = RepeatMode.noRepeat
-          state.isLoop = false
-          break
-        default:
-          state.repeatMode = RepeatMode.noRepeat
-          state.isLoop = false
-      }
-
-      console.log('New RepeatMode:', state.repeatMode, '| Loop:', state.isLoop)
+    setRepeatMode: (state, { payload }: PayloadAction<RepeatMode>) => {
+      state.repeatMode = payload
     }
   },
   selectors: {
@@ -127,6 +112,7 @@ export const {
   initializePlayer,
   seekTo,
   trackEnded,
+  toggleRepeatMode,
 } = playerSlice.actions
 
 export const {
