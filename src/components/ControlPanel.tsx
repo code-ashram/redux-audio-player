@@ -46,7 +46,6 @@ const ControlPanel: FC = () => {
   }
 
   const handleSwitchLoop = () => {
-    // dispatch(setRepeatMode())
     dispatch(toggleRepeatMode())
   }
 
@@ -73,8 +72,6 @@ const ControlPanel: FC = () => {
       dispatch(seekTo(newTime));
     }
   }
-
-  console.log(duration)
 
   return (
     <Card.Content className="w-full flex flex-col items-center border-t-transparent">

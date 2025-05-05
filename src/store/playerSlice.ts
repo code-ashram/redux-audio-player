@@ -46,15 +46,12 @@ const playerSlice = createSlice({
     prevTrackRequest: () => {
 
     },
-    choseTrack: (state, { payload }: PayloadAction<number>) => {
-
-    },
+    choseTrack: (state, { payload }: PayloadAction<number>) => {},
     toggleRepeatMode: () => {
 
     },
     trackEnded: (state) => {
-      state.isPlaying = false;
-      console.log('Reducer: Track ended');
+      state.isPlaying = false
     },
     loadTrack: () => {},
     initializePlayer: () => {},
@@ -73,9 +70,6 @@ const playerSlice = createSlice({
     },
     setCurrentTrackIndex: (state, { payload }: PayloadAction<number>) => {
       state.currentTrackIndex = payload
-    },
-    setSelectedTime: (state, { payload }: PayloadAction<number | null>) => {
-      state.selectedTime = payload
     },
     setRepeatMode: (state, { payload }: PayloadAction<RepeatMode>) => {
       state.repeatMode = payload
@@ -104,7 +98,6 @@ export const {
   setCurrentTime,
   setVolume,
   setCurrentTrackIndex,
-  setSelectedTime,
   setRepeatMode,
   nextTrackRequest,
   prevTrackRequest,
@@ -117,7 +110,7 @@ export const {
 
 export const {
   isPlaying, isLoop, trackDuration, trackCurrentTime, trackVolume,
-  currentTrackIndex, trackSelectedTime, playerPlaylist, playerRepeatMode
+  currentTrackIndex, playerPlaylist, playerRepeatMode
 } = playerSlice.selectors
 
 export default playerSlice.reducer
