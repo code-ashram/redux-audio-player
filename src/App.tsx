@@ -9,29 +9,6 @@ import { Card } from '@/components/ui/card'
 
 import './App.scss'
 
-import express from 'express'
-import dotenv from 'dotenv'
-
-const port: number = 5000
-
-dotenv.config()
-
-const clientId: string = import.meta.env.VITE_SPOTIFY_CLIENT_ID
-const clientSecret: string = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
-const redirectUri: string = import.meta.env.VITE_SPOTIFY_CLIENT_REDIRECT
-
-const app = express()
-
-app.get('/auth/login', (req, res) => {
-})
-
-app.get('/auth/callback', (req, res) => {
-})
-
-app.listen(port, () => {
-  console.log(`Listening at http://127.0.0.1:${port}`)
-})
-
 const App = () => {
   const { theme } = useTheme()
   const dispatch = useDispatch()
