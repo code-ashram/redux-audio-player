@@ -58,6 +58,9 @@ export async function getSpotifyAccessToken (): Promise<string> {
   const token = response.data.access_token
   const expiresIn = response.data.expires_in
 
-  saveTokenToStorage(token, expiresIn)
+  await saveTokenToStorage(token, expiresIn)
+
+  console.log('Spotify token:', token)
+
   return token
 }
