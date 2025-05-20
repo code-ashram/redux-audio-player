@@ -12,7 +12,5 @@ spotifyClient.interceptors.request.use(async (config) => {
     config.headers['Authorization'] = `Bearer ${token}`
   }
 
-  console.log('Adding token to request:', token)
-
   return config
 })

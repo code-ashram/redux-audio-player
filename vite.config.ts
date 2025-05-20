@@ -3,13 +3,16 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path';
 import svgr from "vite-plugin-svgr";
+import basicSsl from '@vitejs/plugin-basic-ssl';
+
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     tailwindcss(),
     react(),
-    [svgr()]
+    [svgr()],
+    basicSsl()
   ],
   resolve: {
     alias: {
@@ -17,6 +20,6 @@ export default defineConfig({
     },
   },
   server: {
-    host: '0.0.0.0', // Привязываем сервер ко всем доступным интерфейсам
+    host: '0.0.0.0',
   },
 })

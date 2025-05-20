@@ -8,7 +8,7 @@ import PlayList from '@/components/PlayList.tsx'
 import { Card } from '@/components/ui/card'
 
 import './App.scss'
-import { getArtist } from '@/api/endpoints.ts'
+import { getAlbums, getArtist, getArtistAlbums, getTracks } from '@/api/endpoints.ts'
 
 const App = () => {
   const { theme } = useTheme()
@@ -17,7 +17,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initializePlayer())
 
-    getArtist('43w158jyKQJBTK2M8DPy9T').then(r => console.log(r))
+    getTracks('11dFghVXANMlKmJXsNCbNl').then(r => console.log(r))
   }, [dispatch])
 
   return (
